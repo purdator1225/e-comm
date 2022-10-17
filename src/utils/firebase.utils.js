@@ -1,11 +1,20 @@
-import {initializeApp} from 'firebase/app';
+//1. Import needed tools
 
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider} from 'firebase/auth'
+import { initializeApp } from "firebase/app";
 
+//import some Auth methods
+import {
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
-import {getFirestore,doc,getDoc,setDoc} from 'firebase/firestore'
+//import firestore
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
-//We need to tell that this instance is the one on the firebase console 
+//We need to tell that this instance is the one on the firebase console
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,51 +28,80 @@ const firebaseConfig = {
   storageBucket: "crown-db-clothing.appspot.com",
   messagingSenderId: "88053376313",
   appId: "1:88053376313:web:b1393b3ca79408f530b4e8",
-  measurementId: "G-24C49K2C5Z"
+  measurementId: "G-24C49K2C5Z",
 };
 
-
-// Initialize Firebase, this is the instance in the console
+// 2. Initialize Firebase, this is the instance in the console
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 //google auth provider is a class from google itself, hence there is word 'new'
-const provider = new GoogleAuthProvider();
 
-//ask for account 
-provider.setCustomParameters({
-    prompt: 'select_account'
-})
+//3. Initialise new provider
+const googleProvider = new GoogleAuthProvider();
 
-//the method of authentication for communication is the same for the app 
+//ask for account
+//4. Set paramaters for provider
+googleProvider.setCustomParameters({
+  prompt: "select_account",
+});
+
+//the method of authentication for communication is the same for the app
+//5.
 export const auth = getAuth();
 
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider)
+//to return signINwithpopup
 
-export const db= getFirestore();
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
 
-export const createUserDocumentFromAuth= async(userAuth)=>{
-  //need to see if theres a doc reference 
-  const userDocRef = doc(db,'users',userAuth.uid);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
-  //this object allows us to check if the user exists 
+//instantiatate the db ..directly points to database
+export const db = getFirestore();
+
+//receives authentication object
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
+  //need to see if theres a doc reference, which is an instance of a document model
+
+  //WE WANT TO GET THE REF FROM FIRESTORE, there is already a reference that is pointing to the uid
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  //this object allows us to check if the userref exists
   const userSnapshot = await getDoc(userDocRef);
 
-  console.log(userSnapshot)
+  console.log(userSnapshot);
 
-  if(!userSnapshot.exists()){
-    const {displayName, email} = userAuth;
+  //if snapshot exists, set the doc with this object
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
     const createdAt = new Date();
 
-    try{
-      await setDoc(userDocRef,{displayName,email,createdAt})
-    }
-    catch(error){
-      console.log('error creating user',error.message);
+    try {
+      //set the document to the docref
+      await setDoc(userDocRef, { displayName, email, createdAt,
+      ...additionalInformation});
+    } catch (error) {
+      console.log("error creating user", error.message);
     }
   }
 
-}
+  return userDocRef;
+};
 
-//Check if user data exists, if yes, rturn user Document ref 
-//if user data does not exist, set the docuement with data from userAuth in my collection 
+//Check if user data exists, if yes, rturn user Document ref
+//if user data does not exist, set the docuement with data from userAuth in my collection
+
+
+//added these utilities as a central location to link the underlying servies 
+export const createAuthUserWithEmailandPassword = async (email,password) => {
+
+  if(!email || !password) return;
+  
+  return await createUserWithEmailAndPassword(auth,email,password)
+
+
+};
