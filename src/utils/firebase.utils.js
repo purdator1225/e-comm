@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 
 //import firestore
@@ -61,7 +62,7 @@ export const signInWithGoogleRedirect = () =>
 //instantiatate the db ..directly points to database
 export const db = getFirestore();
 
-//receives authentication object
+//receives authentication object, the userAuth object may have different values according to which Auth you use, for GoogleAuth you may have a displayName value set but not for email Auth, so set an additional information argument to spread into the setting doc object
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
   //need to see if theres a doc reference, which is an instance of a document model
 
@@ -83,6 +84,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     try {
       //set the document to the docref
       await setDoc(userDocRef, { displayName, email, createdAt,
+      //spread the additional objects into the set doc object argument
       ...additionalInformation});
     } catch (error) {
       console.log("error creating user", error.message);
@@ -102,6 +104,16 @@ export const createAuthUserWithEmailandPassword = async (email,password) => {
   if(!email || !password) return;
   
   return await createUserWithEmailAndPassword(auth,email,password)
+
+
+};
+
+
+export const signInUserWithEmailandPassword = async (email,password) => {
+
+  if(!email || !password) return;
+  
+  return await signInWithEmailAndPassword(auth,email,password)
 
 
 };
