@@ -1,17 +1,16 @@
 import logo from "./logo.svg";
 import "./categories.styles.scss";
 import Home from "./routes/home/home.component";
+import Shop from "./routes/shop/shop.component";
 import Authentication from "./routes/authentication/authentication.component";
 import { Routes, Route, } from "react-router-dom";
 import Navigation from "./routes/navbar/navbar.component";
 
+import { useContext } from "react";
+import { UserContext } from "./components/contexts/user.context";
 
 //becomes a template header
 
-
-function Shop() {
-  return <h1> Hi this is Shop</h1>;
-}
 
 function App() {
   return (

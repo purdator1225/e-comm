@@ -10,6 +10,7 @@ import './sign-up-form.styles.scss'
 import FormInput from "../form-input/form-input.component";
 
 import Button from "../button/button.component";
+
 // New pattern to set states for repeated in the same object
 
 const defaultForm = {
@@ -45,6 +46,7 @@ const SignUpForm = () => {
         password
       );
 
+
       await createUserDocumentFromAuth(user, { displayName });
 
       resetFromFields();
@@ -66,7 +68,6 @@ const SignUpForm = () => {
       ...formFields,
       [name]: value,
     });
-    console.log(formFields);
   };
 
   return (

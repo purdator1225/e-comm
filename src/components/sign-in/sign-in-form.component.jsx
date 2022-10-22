@@ -7,6 +7,10 @@ import {
   auth,
 } from "../../utils/firebase.utils";
 
+
+
+// import { UserContext } from "../contexts/user.context";
+
 import "./sign-in-form.styles.scss";
 
 import FormInput from "../form-input/form-input.component";
@@ -24,16 +28,21 @@ const SignInForm = () => {
 
   const { email, password } = formFields;
 
+  //use the setCurrentUser method from the useContext hook 
+  //useContexthook uses a usercontext which has been created 
+
+  // const {setCurrentUser} = useContext(UserContext)
+
   const resetFromFields = () => {
     setFormFields(defaultForm);
   };
 
   const signInwithGoogle = async () => {
     //deconstruct user from the Auth object
-    const { user } = await signInWithGooglePopup();
+     await signInWithGooglePopup();
 
     //after receive the user object then create the userDoc
-    await createUserDocumentFromAuth(user);
+    // await createUserDocumentFromAuth(user);
   };
 
   //this runs when i submit the handler
@@ -43,9 +52,9 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      const response = await signInUserWithEmailandPassword(email, password);
+      const {user} = await signInUserWithEmailandPassword(email, password);
 
-      console.log(response);
+      //use the setCurrentUser method from the useContext hook 
 
       resetFromFields();
     } catch (error) {
@@ -71,7 +80,6 @@ const SignInForm = () => {
       ...formFields,
       [name]: value,
     });
-    console.log(formFields);
   };
 
   return (
