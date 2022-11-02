@@ -14,7 +14,8 @@ export const ProductsProvider = ({children})=>{
 
 //useState sets state to the products list 
     const [products,setProducts] = useState(PRODUCTS);
-    
+
+//pass value down as props 
     const value = {products,setProducts}
 
 

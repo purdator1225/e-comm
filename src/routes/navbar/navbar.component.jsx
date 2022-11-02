@@ -1,3 +1,5 @@
+import "./navbar.styles.scss";
+
 import { Fragment, useContext } from "react";
 
 import { Outlet, Link } from "react-router-dom";
@@ -8,8 +10,10 @@ import { signOutUser } from "../../utils/firebase.utils";
 
 import { UserContext } from "../../components/contexts/user.context";
 
-import "./navbar.styles.scss";
+
 import CartIcon from "../../components/card-icon/card-icon.component";
+
+
 
 import CartDropdown from "../../cart-dropdown/cart-dropdown.component";
 import { CartContext } from "../../components/contexts/card-context";
