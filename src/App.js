@@ -5,6 +5,7 @@ import Shop from "./routes/shop/shop.component";
 import Authentication from "./routes/authentication/authentication.component";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./routes/navbar/navbar.component";
+import Checkout from "./routes/checkout/checkout.component";
 
 import { useContext } from "react";
 import { UserContext } from "./components/contexts/user.context";
@@ -17,7 +18,8 @@ function App() {
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/sign-in" element={<Authentication />} />
+        <Route path="/auth" element={<Authentication />} />
+        <Route path='/checkout' element={<Checkout/>}/>
       </Route>
     </Routes>
   );

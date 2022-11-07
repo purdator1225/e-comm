@@ -27,33 +27,30 @@ function Navigation() {
 
   return (
     <Fragment>
-      <div className="navigation">
-        <Link className="logo-container" to="/">
-          <CrwnLogo className="logo" />
+    <div className='navigation'>
+      <Link className='logo-container' to='/'>
+        <CrwnLogo className='logo' />
+      </Link>
+      <div className='nav-links-container'>
+        <Link className='nav-link' to='/shop'>
+          SHOP
         </Link>
-        <div className="nav-links-container">
-          <Link className="nav-link" to="/shop">
-            SHOP
+
+        {currentUser ? (
+          <span className='nav-link' onClick={signOutUser}>
+            SIGN OUT
+          </span>
+        ) : (
+          <Link className='nav-link' to='/auth'>
+            SIGN IN
           </Link>
-
-          {currentUser ? (
-            <span className="nav-link" onClick={signOutUser}>
-              SIGN OUT{" "}
-            </span>
-          ) : (
-            <Link className="nav-link" to="/sign-in">
-              SIGN IN
-            </Link>
-          )}
-
-          <CartIcon />
-        </div>
-        {/* //relative to navigation */}
-        {isCartOpen && <CartDropdown />}
-        
+        )}
+        <CartIcon />
       </div>
-      <Outlet />
-    </Fragment>
+      {isCartOpen && <CartDropdown />}
+    </div>
+    <Outlet />
+  </Fragment>
   );
 }
 
