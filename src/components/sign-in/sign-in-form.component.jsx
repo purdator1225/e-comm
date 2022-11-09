@@ -9,13 +9,13 @@ import {
 
 
 
-// import { UserContext } from "../contexts/user.context";
+import { UserContext } from "../contexts/user.context";
 
 import "./sign-in-form.styles.scss";
 
 import FormInput from "../form-input/form-input.component";
 
-import Button from "../button/button.component";
+import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 // New pattern to set states for repeated in the same object
 
 const defaultForm = {
@@ -107,11 +107,11 @@ const SignInForm = () => {
         />
 
         <div className="buttons-container">
-          <Button buttonType="" type="submit" onChange={handleChange}>
+          <Button buttonType={BUTTON_TYPE_CLASSES.base} type="submit" onChange={handleChange}>
             Sign In
           </Button>
 
-          <Button buttonType="google" type='button' onClick={signInwithGoogle}>
+          <Button buttonType={BUTTON_TYPE_CLASSES.google} type='button' onClick={signInwithGoogle}>
             Google Sign In
           </Button>
         </div>

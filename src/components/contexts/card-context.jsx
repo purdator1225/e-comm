@@ -1,5 +1,6 @@
 import { createContext, useState ,useEffect} from "react";
 
+
 //an add cartItem function taking in cartItems productToAdd and returning cartItems and product to Add
 export const addCartItem = (cartItems, productToAdd) => {
   //find if cartIems constains product to add,

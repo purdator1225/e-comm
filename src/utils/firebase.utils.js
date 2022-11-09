@@ -11,11 +11,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
 
 //import firestore
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs} from "firebase/firestore";
 
 //We need to tell that this instance is the one on the firebase console
 import { getAnalytics } from "firebase/analytics";
@@ -64,9 +64,55 @@ export const signInWithGoogleRedirect = () =>
 //instantiatate the db ..directly points to database
 export const db = getFirestore();
 
+
+//helper function to add collection and documents 
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+
+ //needs a collection Reference which is returned by the collection method 
+  const collectionRef = collection(db, collectionKey);
+
+  const batch = writeBatch(db); 
+
+  objectsToAdd.forEach ((object)=>{
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef,object);
+  })
+
+  await batch.commit();
+  console.log('done');
+
+};
+
+
+//create helper function 
+export const getCategoriesAndDocuments= async ()=>{
+  const collectionRef = collection(db, 'categories');
+
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q)
+
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot)=>{
+      const {title,items} = docSnapshot.data();
+      acc[title.toLowerCase()] = items;
+      return acc; 
+
+  }, {});
+
+  return categoryMap;
+}
+
+
+
 //receives authentication object, the userAuth object may have different values according to which Auth you use, for GoogleAuth you may have a displayName value set but not for email Auth, so set an additional information argument to spread into the setting doc object
 
-export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation
+) => {
   //need to see if theres a doc reference, which is an instance of a document model
 
   //WE WANT TO GET THE REF FROM FIRESTORE, there is already a reference that is pointing to the uid
@@ -86,9 +132,13 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
 
     try {
       //set the document to the docref
-      await setDoc(userDocRef, { displayName, email, createdAt,
-      //spread the additional objects into the set doc object argument
-      ...additionalInformation});
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        //spread the additional objects into the set doc object argument
+        ...additionalInformation,
+      });
     } catch (error) {
       console.log("error creating user", error.message);
     }
@@ -100,34 +150,24 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
 //Check if user data exists, if yes, rturn user Document ref
 //if user data does not exist, set the docuement with data from userAuth in my collection
 
+//added these utilities as a central location to link the underlying servies
 
-//added these utilities as a central location to link the underlying servies 
+export const createAuthUserWithEmailandPassword = async (email, password) => {
+  if (!email || !password) return;
 
-export const createAuthUserWithEmailandPassword = async (email,password) => {
-
-  if(!email || !password) return;
-  
-  return await createUserWithEmailAndPassword(auth,email,password)
-
-
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
 
+export const signInUserWithEmailandPassword = async (email, password) => {
+  if (!email || !password) return;
 
-export const signInUserWithEmailandPassword = async (email,password) => {
-
-  if(!email || !password) return;
-  
-  return await signInWithEmailAndPassword(auth,email,password)
-
-
+  return await signInWithEmailAndPassword(auth, email, password);
 };
 
-
-export const signOutUser = ()=>{
+export const signOutUser = () => {
   signOut(auth);
-}
+};
 
-
-export const onAuthStateChangedListener = (callback)=>{
-  onAuthStateChanged(auth,callback)
-}
+export const onAuthStateChangedListener = (callback) => {
+  onAuthStateChanged(auth, callback);
+};
