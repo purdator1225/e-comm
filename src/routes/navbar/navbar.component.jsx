@@ -37,14 +37,12 @@ function Navigation() {
         </NavLink>
 
         {currentUser ? (
-          <span onClick={signOutUser}>
-            SIGN OUT
-          </span>
-        ) : (
-          <NavLink to='/auth'>
-            SIGN IN
-          </NavLink>
-        )}
+            <NavLink as='span' onClick={signOutUser}>
+              SIGN OUT
+            </NavLink>
+          ) : (
+            <NavLink to='/auth'>SIGN IN</NavLink>
+          )}
         <CartIcon />
       </NavLinks>
       {isCartOpen && <CartDropdown />}

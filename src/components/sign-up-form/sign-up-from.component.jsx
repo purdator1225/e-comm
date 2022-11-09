@@ -5,7 +5,7 @@ import {
   createUserDocumentFromAuth,
 } from "../../utils/firebase.utils";
 
-import './sign-up-form.styles.scss'
+import './sign-up-form.styles.jsx'
 
 import FormInput from "../form-input/form-input.component";
 
@@ -113,7 +113,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <Button buttonType ='' type="submit"  onChange={handleChange}>
+        <Button type="submit"  onChange={handleChange}>
             Sign In
         </Button>
         

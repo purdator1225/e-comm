@@ -2,13 +2,7 @@ import {
   BaseButton,
   GoogleSignInButton,
   invertedButton,
-} from "./button.styles";
-/*
-default 
-inverted 
-google sign in 
-
-*/
+} from './button.styles.jsx';
 
 //create an object of button types
 
@@ -18,16 +12,15 @@ export const BUTTON_TYPE_CLASSES = {
   inverted: "inverted",
 };
 
-//new get Buttoncomponent that returns the correct type of button 
+//new get Buttoncomponent that returns the correct type of button
 
-const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) => ({
-
-//render the styled component based on what the button type is 
-  [BUTTON_TYPE_CLASSES.base]: BaseButton,
-  [BUTTON_TYPE_CLASSES.google]: GoogleSignInButton,
-  [BUTTON_TYPE_CLASSES.inverted]: invertedButton,
-}
-[buttonType]);
+const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
+  ({
+    //render the styled component based on what the button type is
+    [BUTTON_TYPE_CLASSES.base]: BaseButton,
+    [BUTTON_TYPE_CLASSES.google]: GoogleSignInButton,
+    [BUTTON_TYPE_CLASSES.inverted]: invertedButton,
+  }[buttonType]);
 
 //pass in button types as a prop
 

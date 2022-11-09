@@ -2,16 +2,13 @@ import { useState } from "react";
 
 import {
   signInUserWithEmailandPassword,
-  createUserDocumentFromAuth,
   signInWithGooglePopup,
-  auth,
 } from "../../utils/firebase.utils";
 
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
 
 
-import { UserContext } from "../contexts/user.context";
-
-import "./sign-in-form.styles.scss";
+import "./sign-in-form.styles.jsx";
 
 import FormInput from "../form-input/form-input.component";
 
@@ -83,40 +80,39 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="sign-up-container">
-      <h2>Already have an account?</h2>
-      <span>Sign in with your email and password</span>
+    <SignInContainer>
+    <h2>Already have an account?</h2>
+    <span>Sign in with your email and password</span>
+    <form onSubmit={handleSubmit}>
+      <FormInput
+        label='Email'
+        type='email'
+        required
+        onChange={handleChange}
+        name='email'
+        value={email}
+      />
 
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          label="Email"
-          required
-          type="email"
-          onChange={handleChange}
-          name="email"
-          value={email}
-        />
-
-        <FormInput
-          label="Password"
-          required
-          type="password"
-          onChange={handleChange}
-          name="password"
-          value={password}
-        />
-
-        <div className="buttons-container">
-          <Button buttonType={BUTTON_TYPE_CLASSES.base} type="submit" onChange={handleChange}>
-            Sign In
-          </Button>
-
-          <Button buttonType={BUTTON_TYPE_CLASSES.google} type='button' onClick={signInwithGoogle}>
-            Google Sign In
-          </Button>
-        </div>
-      </form>
-    </div>
+      <FormInput
+        label='Password'
+        type='password'
+        required
+        onChange={handleChange}
+        name='password'
+        value={password}
+      />
+      <ButtonsContainer>
+        <Button type='submit'>Sign In</Button>
+        <Button
+          buttonType={BUTTON_TYPE_CLASSES.google}
+          type='button'
+          onClick={signInwithGoogle}
+        >
+          Sign In With Google
+        </Button>
+      </ButtonsContainer>
+    </form>
+  </SignInContainer>
   );
 };
 
