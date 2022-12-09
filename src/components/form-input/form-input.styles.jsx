@@ -9,7 +9,6 @@ font-size: 12px;
 color: ${mainColor};`
 
 
-
 export const FormInputLabel = styled.label`
     color: ${subColor};
     font-size: 16px;
@@ -26,7 +25,7 @@ export const FormInputLabel = styled.label`
 export const Input =  styled.input`
     background: none;
     background-color: white;
-    color: $sub-color;
+    color: ${subColor};
     font-size: 18px;
     padding: 10px 10px 10px 5px;
     display: block;

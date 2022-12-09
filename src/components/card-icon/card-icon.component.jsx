@@ -4,7 +4,6 @@ import {CartIconContainer, ItemCount, ShoppingIcon}  from "./card-icon.styles.js
 import { useContext } from "react";
 import { CartContext } from "../contexts/card-context";
 
-
 const CartIcon = () => {
 
 const {isCartOpen, setCartOpen, cartCount} = useContext(CartContext)
@@ -22,3 +21,4 @@ const toggleCartOpen = () =>
 };
 
 export default CartIcon;
+  
